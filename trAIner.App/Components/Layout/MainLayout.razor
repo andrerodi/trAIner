@@ -1,65 +1,28 @@
-﻿@inherits LayoutComponentBase
+﻿@using trAIner.App.Services
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider IsDarkMode="true" Theme="@_jetbrainsMonoFont" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+@* <MudOverlay @bind-Visible="_isLoading" DarkBackground="true" /> *@
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        trAIner
+    </MudAppBar>
 
-<FluentLayout Style="margin-top: 10px;">
-    @if (ShowHeader)
-    {
-        <FluentHeader>
-            Some Header Text
-            <FluentSpacer />
-            Aligned to the end
-        </FluentHeader>
-    }
-    
-    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
-        @if (ShowNavMenu)
-        {
-            <FluentNavMenu Width="250">
-                <FluentNavLink Icon="@(new Icons.Regular.Size24.Home())">Item 1</FluentNavLink>
-                <FluentNavLink Icon="@(new Icons.Regular.Size24.Cloud())">Item 2</FluentNavLink>
-                <FluentNavGroup Title="Item 3">
-                    <FluentNavLink Icon="@(new Icons.Regular.Size24.LeafOne())">Item 3.1</FluentNavLink>
-                    <FluentNavLink Icon="@(new Icons.Regular.Size24.LeafTwo())">Item 3.2</FluentNavLink>
-                </FluentNavGroup>
-                <FluentNavLink Icon="@(new Icons.Regular.Size24.CalendarAgenda())" Disabled="true">Item 4</FluentNavLink>
-            </FluentNavMenu>
-        }
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <NavbarMenu />
+    </MudDrawer>
 
-        @if (ShowBodyContent)
-        {
-            <FluentBodyContent>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis lorem lacus.
-                Ut id leo non enim feugiat ultrices. Proin vulputate volutpat urna nec iaculis.
-                Integer dui lacus, fermentum sit amet aliquet in, scelerisque vitae dui.
-                Nulla fringilla sagittis orci eu consectetur. Fusce eget dolor non lectus placerat
-                tincidunt. Pellentesque aliquam non odio ac porttitor. Nam finibus mattis sagittis.
-                Ut hendrerit porttitor massa in aliquam. Duis laoreet fringilla feugiat.
-                Sed maximus, urna in fringilla posuere, enim urna bibendum justo, vel molestie nibh orci nec lectus.
-                Etiam a varius justo. Aenean nisl ante, interdum eget vulputate eget, iaculis ut massa.
-                Suspendisse maximus sed purus id molestie. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </FluentBodyContent>
-        }
-    </FluentStack>
+    <MudMainContent>
+        <trAIner.App.Components.Pages.ChatWindow @ref="_chatWindow" />
+        @* @Body *@
+    </MudMainContent>
 
-    @if (ShowFooter)
-    {
-        <FluentFooter Style="@("height: 40px; color: white; text-align: center;")">
-            Footer Text
-        </FluentFooter>
-    }
-</FluentLayout>
+    <MudAppBar Bottom="true" Color="Color.Transparent" Elevation="0" Class="mb-5">
+        <MudTextField @bind-Value="_prooompt" Disabled="_isLoading" T="string" OnAdornmentClick="@(async () => await RequestAsync(_prooompt))" Class="pb-5" Label="Help" Variant="Variant.Outlined" Lines="2" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.SavedSearch" />
+    </MudAppBar>
+</MudLayout>

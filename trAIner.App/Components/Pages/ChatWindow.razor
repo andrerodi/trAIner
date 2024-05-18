@@ -1,0 +1,39 @@
+﻿<div id="chatContainer" style="overflow-y: auto; height: calc(100vh - 170px);" class="mt-2 mx-2">
+    @foreach (var message in @ChatWindowService.Requests)
+    {
+        <div class="py-2"></div>
+
+        <MudStack Row="true" Justify="Justify.FlexEnd" Class="pe-1">
+            <MudText Typo="Typo.caption" Color="Color.Info">@message.CreatedAt.ToLocalTime().ToShortTimeString()</MudText>
+            <MudText>@message.Content</MudText>
+        </MudStack>
+
+        <div class="py-2"></div>
+
+        @if (message.Response != null)
+        {
+            if (message.Response.Error != null)
+            {
+                <MudStack Row="true" Justify="Justify.FlexStart" Class="ps-1">
+                    <MudText Typo="Typo.caption" Color="Color.Error">@message.Response.CreatedAt.ToLocalTime().ToShortTimeString()</MudText>
+                    <MudText>Error occured</MudText>
+                </MudStack>
+            }
+            else
+            {
+                <MudStack Row="true" Justify="Justify.FlexStart" Class="ps-1">
+                    <MudText Typo="Typo.caption" Color="Color.Success">@message.Response.CreatedAt.ToLocalTime().ToShortTimeString()</MudText>
+                    <MudText>@message.Response.Content</MudText>
+                </MudStack>
+            }
+        }
+        else
+        {
+            <MudProgressLinear Color="Color.Info" Indeterminate="true" />
+        }
+
+        <div class="py-2"></div>
+
+        <MudDivider DividerType="DividerType.Middle"></MudDivider>
+    }
+</div>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
+using trAIner.App.Services;
 
 namespace trAIner.App;
 public static class MauiProgram
@@ -14,9 +16,13 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddMudServices();
+
+        builder.Services.AddOpenAiApiService();
+        builder.Services.AddChatWindowService();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 
